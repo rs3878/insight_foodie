@@ -1,34 +1,45 @@
 import pandas as pd
 import numpy as np
-from random import randrange
-import datetime
 from kafka import KafkaProducer
 import pandas.io.sql as sqlio
 import psycopg2
+import datetime
 
+params = {
+  'database': 'yelp',
+  'user': 'postgres',
+  'password': '19980126',
+  'host': '10.0.0.14',
+  'port': '5432'
+}
 
 conn = psycopg2.connect("dbname=yelp user=postgres password=postgres")
-business = sqlio.read_sql_query("""SELECT * FROM clean_business""", conn)
-user = sqlio.read_sql_query("""SELECT * FROM clean_user""", conn)
+#conn = psycopg2.connect(**params)
+user = sqlio.read_sql_query("""SELECT * FROM kmeans_users""", conn)
 
-n_business = len(business)
 n_users = len(user)
 
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 def gen_one(i):
-    rdm_restaurant = np.random.randint(low = 0, high = n_business, size = 1)
-    restaurant = business['business_ids'].iloc[rdm_restaurant]
-
     rdm_customer = np.random.randint(low = 0, high = n_users, size = 1)
-    customer = user['user_ids'].iloc[rdm_customer]
+    customer = user['user_ids'].iloc[rdm_customer].values[0]
+    city = user['user_city'].iloc[rdm_customer].values[0]
+    prediction = user['prediction'].iloc[rdm_customer].values[0]
+    user_name = user['user_name'].iloc[rdm_customer].values[0]
 
-    timestp = datetime.datetime(2019, 1, 1, 13, 00)
-    rdm_time = timestp+datetime.timedelta(seconds=i)
+    timestp = 20190101130000
+    rdm_time = datetime.datetime.now()
 
-    output = (restaurant,customer,rdm_time)
+    output = {}
+    output['city'] = city
+    output['user'] = customer
+    output['timestamp'] = str(rdm_time)
+    output['prediction'] = prediction
+    output['user_name'] = user_name
 
-    producer.send('yelp', bytes(str(output), 'utf-8'))
+    producer.send('yelp3', bytes(str(output), 'utf-8'))
+
     producer.flush()
 
 for i in range(1000000):

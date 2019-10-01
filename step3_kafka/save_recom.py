@@ -23,7 +23,16 @@ df = df.reset_index()
 
 engine = create_engine('postgresql://postgres:postgres@localhost:5432/yelp')
 
-conn = psycopg2.connect("dbname=yelp user=postgres password=postgres")
+params = {
+  'database': 'yelp',
+  'user': 'postgres',
+  'password': '19980126',
+  'host': '10.0.0.14',
+  'port': '5432'
+}
+
+# conn = psycopg2.connect("dbname=yelp user=postgres password=postgres")
+conn = psycopg2.connect(**params)
 cursor = conn.cursor()
 q = "drop table if exists recom;"
 
