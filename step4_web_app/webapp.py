@@ -36,7 +36,7 @@ def fcn():
 	u_city = request.form['city']
 	q = """select distinct user_name, user_id \
 			from consumer \
-			where prediction = {} and city='{}' and time >= NOW() - INTERVAL '1000 MINUTE'"""
+			where prediction = {} and city='{}' and time >= NOW() - INTERVAL '10000000 MINUTE'"""
 	cursor.execute(q.format(prediction,u_city))
 
 	result = cursor.fetchall()
@@ -88,5 +88,8 @@ if __name__ == "__main__":
 		#HOST, PORT = host, port
 		#print("running on %s:%d" % (HOST, PORT))
 		# app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+
+
 		app.run(debug=True, host = '0.0.0.0', threaded = True, port= 8111)
+		# app.run(debug=True, host = '192.168.0.14', threaded = True, port= 8111)
 	run()
