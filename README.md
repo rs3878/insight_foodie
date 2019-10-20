@@ -18,3 +18,6 @@ predicted rating for each pair of user and business.
 - Streaming real-time check-in data (user_id, business_id, timestamp) using kafka and store it to postgres directly  
 ### Step 4:
 - Use complex sql queries to fulfill front end needs
+- When a user inputs his/her user_id, and the city he/she is currently in, he/she would be able to find foodies to eat 
+with and see the restaurants those foodies has rate before.
+
