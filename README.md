@@ -1,5 +1,5 @@
 # datars
-This app uses spark-collaborative filtering to generate user features based on the ratings and use clustering models to 
+This app uses spark-collaborative filtering to generate user features based on the ratings and uses clustering models to 
 find users that have similar tastes.   
 I will use the yelp challenge data set for building model and generate fake user check-in data for real-time streaming. 
 
@@ -15,7 +15,7 @@ predicted rating for each pair of user and business.
 - Apply spark K-means algorithm to cluster users and businesses respectively, assign each user and restaurant a type.
 - Output user types, restaurant types and predictions of user-restaurants pair order by predicted rating.  
 ### Step 3:
-- Streaming real-time check-in data (user_id, business_id, timestamp) using kafka and store it to postgres directly  
+- Streaming real-time check-in data (user_id, business_id, timestamp) using kafka and store it to timescaleDB   
 ### Step 4:
 - Use complex sql queries to fulfill front end needs
 - When a user inputs his/her user_id, and the city he/she is currently in, he/she would be able to find foodies to eat 
